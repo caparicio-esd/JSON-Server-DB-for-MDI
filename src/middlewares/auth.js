@@ -1,4 +1,6 @@
 const authMiddleWare = (req, res, next) => {
+  // https://github.com/typicode/json-server#module
+  
   //
   const authHeader = req.headers['Authorization']
   if (!authHeader) {

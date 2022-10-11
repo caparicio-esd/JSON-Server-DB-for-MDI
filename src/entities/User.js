@@ -8,7 +8,7 @@ class User {
   dob = null
   sex = ''
   email = ''
-  constructor(name, fName, dob, sex, email) {
+  constructor({ name, fName, dob, sex, email }) {
     this.id = faker.datatype.uuid()
     this.name = name
     this.fName = fName
@@ -31,7 +31,7 @@ const createUsers = () => {
     )
     const sex = faker.datatype.boolean() ? 'male' : 'female'
     const email = faker.internet.email(name, fName).toLowerCase()
-    users.push(new User(name, fName, dob, sex, email))
+    users.push(new User({ name, fName, dob, sex, email }))
   }
   return users
 }
