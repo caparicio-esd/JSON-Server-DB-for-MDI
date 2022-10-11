@@ -1,0 +1,20 @@
+{
+  "name": "db_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "generate.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "./node_modules/.bin/json-server ./db.json --watch --port 5757 --middlewares ./src/middlewares/auth.js",
+    "dev": "./node_modules/.bin/nodemon --watch './src/**/*.js'",
+    "generate": "node ./generate.js",
+    "generate:dev": "./node_modules/.bin/nodemon --watch '**/*.js' --ignore './node_modules/**/*' ./generate.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@faker-js/faker": "^7.5.0",
+    "json-server": "^0.17.0",
+    "nodemon": "^2.0.20"
+  }
+}
