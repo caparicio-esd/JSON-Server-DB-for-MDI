@@ -7,26 +7,29 @@ const jwt = require('jsonwebtoken')
 const { JWT_SECRET } = require('../constants')
 const { User } = require('../entities/User')
 
+const queryData = async (path) => {
+  return JSON.parse(await readFile(resolve(path)))
+}
+const persistData = async (path, data) => {
+  await writeFile(resolve(path), JSON.stringify(data, null, 4), {
+    flag: 'w',
+  })
+}
+
 authRouter.post('/signup', async (req, res) => {
   const { name, fName, dob, sex, email, password } = req.body
   const bodyDataAsArray = [name, fName, dob, sex, email, password]
-  
-  // 
-  if (bodyDataAsArray.some(bd => bd === null)) {
+
+  //
+  if (bodyDataAsArray.some((bd) => bd === null)) {
     res.sendStatus(400)
     return
   }
 
   const user = new User({ name, fName, dob, sex, email, password })
-  const dbUsers = JSON.parse(await readFile(resolve('./db.json')))
+  const dbUsers = await queryData('./db.json')
   dbUsers.users.push(user)
-  await writeFile(
-    resolve('./db.json'),
-    JSON.stringify(dbUsers, null, 4),
-    {
-      flag: 'w',
-    },
-  )
+  await persistData('./db.json', dbUsers)
   res.sendStatus(201)
 })
 
@@ -45,7 +48,7 @@ authRouter.post('/logout', async (req, res) => {
   }
 
   //
-  const dbTokens = JSON.parse(await readFile(resolve('./db_tokens.json')))
+  const dbTokens = await queryData('./db_tokens.json')
   const currentToken = dbTokens.find(
     (dbToken) =>
       dbToken.userId == tokenData.user &&
@@ -59,13 +62,7 @@ authRouter.post('/logout', async (req, res) => {
   //
   const currentTokenIndex = dbTokens.indexOf(currentToken)
   dbTokens.splice(currentTokenIndex, 1)
-  await writeFile(
-    resolve('./db_tokens.json'),
-    JSON.stringify(dbTokens, null, 4),
-    {
-      flag: 'w',
-    },
-  )
+  await persistData('./db_tokens.json', dbTokens)
 
   res.sendStatus(200)
 })
@@ -74,7 +71,7 @@ authRouter.post('/login', async (req, res) => {
   const { user, pass } = req.body
   const headers = req.headers
   const requestOrigin = headers['x-application']
-  const userDBData = JSON.parse(await readFile(resolve('./db.json'))).users
+  const { users: userDBData } = await queryData('./db.json')
   const userData = userDBData.find(
     (userDBDataItem) =>
       userDBDataItem.name == user || userDBDataItem.email == user,
@@ -95,7 +92,7 @@ authRouter.post('/login', async (req, res) => {
 
   // create JWT
   let token
-  const dbTokens = JSON.parse(await readFile(resolve('./db_tokens.json')))
+  const dbTokens = await queryData('./db_tokens.json')
   const currentToken = dbTokens.find(
     (dbToken) =>
       dbToken.userId == userData.id && dbToken.requestOrigin == requestOrigin,
@@ -109,13 +106,7 @@ authRouter.post('/login', async (req, res) => {
       requestOrigin,
       iat,
     })
-    await writeFile(
-      resolve('./db_tokens.json'),
-      JSON.stringify(dbTokens, null, 4),
-      {
-        flag: 'w',
-      },
-    )
+    await persistData('./db_tokens.json', dbTokens)
   } else {
     token = currentToken.token
   }
