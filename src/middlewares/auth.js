@@ -1,8 +1,5 @@
 const authMiddleWare = (req, res, next) => {
-  // https://github.com/typicode/json-server#module
-  
-  //
-  const authHeader = req.headers['Authorization']
+  const authHeader = req.headers.authorization
   if (!authHeader) {
     res.status(403).send({
       message: 'not authorized',
@@ -10,7 +7,6 @@ const authMiddleWare = (req, res, next) => {
     return
   }
 
-  //
   if (!authHeader.includes('Bearer ') && !authHeader.indexOf('Bearer ') == 0) {
     res.status(403).send({
       message: 'auth protocol incorrect',
@@ -20,4 +16,5 @@ const authMiddleWare = (req, res, next) => {
 
   next()
 }
-module.exports = authMiddleWare
+
+module.exports = { authMiddleWare }

@@ -1,0 +1,28 @@
+POST http://localhost:5757/auth/login
+Content-Type: application/json
+X-Application: frontend app 01
+
+{
+    "user": "carlos_apa@yes.com", 
+    "pass": "carlos_apa"
+}
+
+###
+
+POST http://localhost:5757/auth/logout
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiMGIzZmZlMDYtYzMyNy00MjhiLTk2ZWItYTAyYzVhZGQ1N2M3IiwiaWF0IjoxNjY1ODI4MDgxfQ.M4h2aOn-QV_gd931kLA2CanALWs-wZpnOE6hAwiX9Cg
+X-Application: frontend app 01
+
+###
+
+POST http://localhost:5757/auth/signup
+Content-Type: application/json
+
+{
+    "name": "carlos", 
+    "fName": "apa", 
+    "dob": "1986-01-28T00:00:00.000Z", 
+    "sex": "male", 
+    "email": "carlos_apa@yes.com", 
+    "password": "carlos_apa"
+}

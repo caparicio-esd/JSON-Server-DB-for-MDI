@@ -1,5 +1,6 @@
 const { faker } = require('@faker-js/faker')
-const { USERS_AMOUNT } = require('../constants')
+const { USERS_AMOUNT, SALT_KEY } = require('../constants')
+const bcrypt = require("bcrypt")
 
 class User {
   id = ''
@@ -8,13 +9,18 @@ class User {
   dob = null
   sex = ''
   email = ''
-  constructor({ name, fName, dob, sex, email }) {
+  password = ''
+  hashedPassword = ''
+  constructor({ name, fName, dob, sex, email, password }) {
     this.id = faker.datatype.uuid()
     this.name = name
     this.fName = fName
     this.dob = new Date(dob)
     this.sex = sex
     this.email = email
+    this.password = password
+    this.salt = bcrypt.genSaltSync()
+    this.hashedPassword = bcrypt.hashSync(this.password, this.salt)
   }
 }
 
@@ -31,7 +37,8 @@ const createUsers = () => {
     )
     const sex = faker.datatype.boolean() ? 'male' : 'female'
     const email = faker.internet.email(name, fName).toLowerCase()
-    users.push(new User({ name, fName, dob, sex, email }))
+    const password = faker.lorem.word()
+    users.push(new User({ name, fName, dob, sex, email, password }))
   }
   return users
 }
