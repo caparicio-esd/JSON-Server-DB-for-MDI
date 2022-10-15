@@ -2,9 +2,9 @@ const { writeFile } = require('fs/promises')
 const { resolve } = require('path')
 
 class Db {
-  constructor({ user, comment }) {
-    this.user = user
-    this.comment = comment
+  constructor({ users, comments }) {
+    this.users = users
+    this.comments = comments
   }
   async persist() {
     const json_data = JSON.stringify(this, null, 4)

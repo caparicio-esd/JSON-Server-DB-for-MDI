@@ -3,9 +3,9 @@ const { Db } = require('./src/entities/Db')
 const { createUsers } = require('./src/entities/User')
 
 const main = () => {
-  const user = createUsers()
-  const comment = createComments(user)
-  const db = new Db({ user, comment })
+  const users = createUsers()
+  const comments = createComments(users)
+  const db = new Db({ users, comments })
   db.persist()
 }
 main()

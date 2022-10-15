@@ -1,5 +1,5 @@
 const jsonServer = require('json-server')
-const { DEFAULT_PORT } = require('./src/constants')
+const { DEFAULT_PORT, AUTH_ENABLED } = require('./src/constants')
 const { authMiddleWare } = require('./src/middlewares/auth')
 const { authRouter } = require('./src/router/auth')
 
@@ -18,7 +18,9 @@ const isTesting = argv.some((arg) => arg.includes('jest'))
 server.use(jsonServer.bodyParser)
 server.use(middlewares)
 server.use('/auth', authRouter)
-server.use(authMiddleWare)
+if (AUTH_ENABLED) {
+  server.use(authMiddleWare)
+}
 server.use(router)
 
 if (!isTesting) {

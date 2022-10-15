@@ -11,7 +11,8 @@ class User {
   email = ''
   password = ''
   hashedPassword = ''
-  constructor({ name, fName, dob, sex, email, password }) {
+  testing = false
+  constructor({ name, fName, dob, sex, email, password, testing }) {
     this.id = faker.datatype.uuid()
     this.name = name
     this.fName = fName
@@ -21,6 +22,7 @@ class User {
     this.password = password
     this.salt = bcrypt.genSaltSync()
     this.hashedPassword = bcrypt.hashSync(this.password, this.salt)
+    this.testing = testing === true
   }
 }
 

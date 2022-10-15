@@ -17,8 +17,8 @@ const persistData = async (path, data) => {
 }
 
 authRouter.post('/signup', async (req, res) => {
-  const { name, fName, dob, sex, email, password } = req.body
-  const bodyDataAsArray = [name, fName, dob, sex, email, password]
+  const { name, fName, dob, sex, email, password, testing } = req.body
+  const bodyDataAsArray = [name, fName, dob, sex, email, password, testing]
 
   //
   if (bodyDataAsArray.some((bd) => bd === null)) {
@@ -26,7 +26,7 @@ authRouter.post('/signup', async (req, res) => {
     return
   }
 
-  const user = new User({ name, fName, dob, sex, email, password })
+  const user = new User({ name, fName, dob, sex, email, password, testing })
   const dbUsers = await queryData('./db.json')
   dbUsers.users.push(user)
   await persistData('./db.json', dbUsers)
@@ -111,7 +111,7 @@ authRouter.post('/login', async (req, res) => {
     token = currentToken.token
   }
 
-  res.jsonp({
+  res.status(200).jsonp({
     token,
   })
 })
@@ -122,4 +122,6 @@ authRouter.use('*', (req, res) => {
 
 module.exports = {
   authRouter,
+  queryData,
+  persistData,
 }
