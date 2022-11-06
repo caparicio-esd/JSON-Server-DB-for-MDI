@@ -10,26 +10,26 @@ const middlewares = jsonServer.defaults()
 const argv = process.argv
 const portIndex = argv.indexOf('--port')
 const port =
-  portIndex >= 0 && argv[portIndex].includes('port')
-    ? argv[portIndex + 1]
-    : DEFAULT_PORT
-const isTesting = argv.some((arg) => arg.includes('jest'))
+    portIndex >= 0 && argv[portIndex].includes('port')
+        ? argv[portIndex + 1]
+        : DEFAULT_PORT
+const isTesting = argv.some(arg => arg.includes('jest'))
 
 server.use(jsonServer.bodyParser)
 server.use(middlewares)
 server.use('/auth', authRouter)
 if (AUTH_ENABLED) {
-  server.use(authMiddleWare)
+    server.use(authMiddleWare)
 }
 server.use(router)
 
 if (!isTesting) {
-  server.listen(port, () => {
-    console.log('JSON Server is running')
-    console.log('http://localhost:' + port)
-  })
+    server.listen(port, () => {
+        console.log('JSON Server is running')
+        console.log('http://localhost:' + port)
+    })
 }
 
 module.exports = {
-  server,
+    server,
 }

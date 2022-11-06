@@ -1,20 +1,23 @@
 const authMiddleWare = (req, res, next) => {
-  const authHeader = req.headers.authorization
-  if (!authHeader) {
-    res.status(403).send({
-      message: 'not authorized',
-    })
-    return
-  }
+    const authHeader = req.headers.authorization
+    if (!authHeader) {
+        res.status(403).send({
+            message: 'not authorized',
+        })
+        return
+    }
 
-  if (!authHeader.includes('Bearer ') && !authHeader.indexOf('Bearer ') == 0) {
-    res.status(403).send({
-      message: 'auth protocol incorrect',
-    })
-    return
-  }
+    if (
+        !authHeader.includes('Bearer ') &&
+        !authHeader.indexOf('Bearer ') == 0
+    ) {
+        res.status(403).send({
+            message: 'auth protocol incorrect',
+        })
+        return
+    }
 
-  next()
+    next()
 }
 
 module.exports = { authMiddleWare }
